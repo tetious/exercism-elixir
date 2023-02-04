@@ -11,13 +11,9 @@ defmodule Hamming do
   def hamming_distance(s1, s2) when length(s1) != length(s2),
     do: {:error, "strands must be of equal length"}
 
-  def hamming_distance(s1, s2), do: {:ok, hamming_distance(s1, s2, 0)}
+  def hamming_distance(s, s), do: {:ok, 0}
+  def hamming_distance(s1, s2), do: {:ok, do_hamming_distance(s1, s2)}
 
-  defp hamming_distance(s, s, dist), do: dist
-
-  defp hamming_distance([p | tail1], [p | tail2], dist),
-    do: hamming_distance(tail1, tail2, dist)
-
-  defp hamming_distance([_ | tail1], [_ | tail2], dist),
-    do: hamming_distance(tail1, tail2, dist + 1)
+  defp do_hamming_distance(s1, s2),
+    do: Enum.zip(s1, s2) |> Enum.count(fn {n1, n2} -> n1 != n2 end)
 end
