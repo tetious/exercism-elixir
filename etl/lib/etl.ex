@@ -8,8 +8,9 @@ defmodule ETL do
     %{"a" => 1, "d" => 2, "e" => 1, "g" => 2}
   """
   @spec transform(map) :: map
-  def transform(input), do: input |> Enum.reduce(%{}, &convert_item/2)
-
-  defp convert_item({score, letters}, result),
-    do: Enum.reduce(letters, result, &Map.put(&2, String.downcase(&1), score))
+  def transform(input) do
+    for {score, letters} <- input, letter <- letters, into: %{} do
+      {String.downcase(letter), score}
+    end
+  end
 end
